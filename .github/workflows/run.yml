@@ -23,6 +23,10 @@ jobs:
         with:
           python-version: 3.7
       - name: 安装依赖并替换环境变量
+        run: |
+          python -m pip install --upgrade requests
+          python -m pip install --upgrade pip
+      - name: 签到
         env:
           PARM: ${{ secrets.PARM }}
         run: |
