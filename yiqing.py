@@ -36,10 +36,11 @@ def report(usr,pas,key,proxy):
     'http': proxy,
     'https': proxy
     }
-    
+    yiqingSession = requests.session()
+    yiqingSession.keep_alive = False
     data=encode_multipart_formdata({'username':usr,'password':pas},
                                    '----WebKitFormBoundary5lPtCfVeRqiu7n6h')
-    login=sess.post('yiqing.ctgu.edu.cn/wx/health/main.do',data=data[0])
+    login=sess.post('yiqing.ctgu.edu.cn/wx/index/login.do',data=data[0])
     
     try:
         responseRes = yiqingSession.post(
