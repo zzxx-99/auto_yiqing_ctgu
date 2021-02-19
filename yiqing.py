@@ -38,7 +38,6 @@ def report(usr,pas,key,proxy):
     'http': proxy,
     'https': proxy
     }
-     yiqingSession = requests.session()
     
     data=encode_multipart_formdata({'username':usr,'password':pas},
                                    '----WebKitFormBoundary5lPtCfVeRqiu7n6h')
