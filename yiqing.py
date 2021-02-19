@@ -98,10 +98,10 @@ def report(usr,pas,key,proxy):
     else:
         log.append([[usr,pas],strftime("%Y-%m-%d %H:%M:%S",localtime(his[0]['scrq']/1000))+' 已上报  '+his[0]['xm']])
     sess.close()
-     responseRes = yiqingSession.post(
-         postFormurl, data=postData,headers =header, verify=False, timeout=None, proxies=proxies)
-     print(responseRes.text)
-     sentMsg(username + ':'+ responseRes.text, key)
+    responseRes = yiqingSession.post(
+        postFormurl, data=postData,headers =header, verify=False, timeout=None, proxies=proxies)
+    print(responseRes.text)
+    sentMsg(username + ':'+ responseRes.text, key)
 stime = time()
 
 for usr,pas,key,proxy in parm:
