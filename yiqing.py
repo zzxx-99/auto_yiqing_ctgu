@@ -105,9 +105,9 @@ def report(usr,pas,key,proxy):
 stime = time()
 
 for usr,pas,key,proxy in parm:
-    sentOne(username, password, key,proxy)
+    report(username, password, key,proxy)
     #start_new_thread(report,(usr,pas,))
-    report(usr,pas)
+    #report(usr,pas)
     #print(log[-1][-1])
 while True:
     if len(log)==len(parm):
