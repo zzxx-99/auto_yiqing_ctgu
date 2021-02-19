@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from requests import Session
-from bs4 import BeautifulSoup
 from urllib3 import encode_multipart_formdata
 from datetime import datetime,timedelta
 from re import findall
@@ -16,8 +15,7 @@ log = []
 
 def sentMsg(msg, key):
     headers = {'Content-Type': 'application/json;charset=utf-8'}
-    api_url = "https://sc.ftqq.com/key.send?text='.urlencode('msg')"
-    return requests.post(api_url, headers=headers, timeout=None).content
+    return requests.post(api_url, headers=headers, timeout=None, data = data).content
 
 def report(usr,pas,key,proxy):
     sess = Session()
@@ -43,15 +41,15 @@ def report(usr,pas,key,proxy):
                                    '----WebKitFormBoundary5lPtCfVeRqiu7n6h')
     login=sess.post('yiqing.ctgu.edu.cn/wx/health/main.do',data=data[0])
     
-    if(login.text!='success'):
-        log.append([[usr,pas],usr])
-        #return 0
-
     try:
         responseRes = yiqingSession.post(
             logUrl, data=postData,headers =header,timeout=None, proxies=proxies)
     except:
         sentMsg('网页无响应/请更换代理', key)
+    
+    if(login.text!='success'):
+        log.append([[usr,pas],usr])
+        #return 0
         
     r=sess.post('http://yiqing.ctgu.edu.cn/wx/health/studentHis.do')
     his=eval(r.text.replace('null','None'))
@@ -83,11 +81,6 @@ def report(usr,pas,key,proxy):
         'sffx':'',
         'qt':'',
     }
-    
-     # 获取必要信息填入表单
-    soup = BeautifulSoup(responseRes.text, "html.parser")
-    getFormlist = soup.find_all('input')[0:15]
-    
     if his[0]['sbrq']!=today:
         for key in apply:
             apply[key] = his[0][key] if his[0][key]!=None else ''
@@ -95,13 +88,26 @@ def report(usr,pas,key,proxy):
         del sess.headers['Content-Type']
         r=sess.post('http://yiqing.ctgu.edu.cn/wx/health/saveApply.do',data=apply)
         log.append([[usr,pas],strftime("%Y-%m-%d %H:%M:%S",localtime(his[0]['scrq']/1000))+' '+eval(r.text)["msgText"]+' '+his[0]['xm']])
+        api_url = 'https://sc.ftqq.com/'+key+'.send'
+        title = "签到结果"
+        content = msg
+        data = {
+                "text" : title,
+                "desp" : content
+            }
+        return requests.post(api_url, headers=headers, timeout=None, data = data).content
+    
     else:
         log.append([[usr,pas],strftime("%Y-%m-%d %H:%M:%S",localtime(his[0]['scrq']/1000))+' 已上报  '+his[0]['xm']])
-    sess.close()
-    responseRes = yiqingSession.post(
-        postFormurl, data=postData,headers =header, verify=False, timeout=None, proxies=proxies)
-    print(responseRes.text)
-    sentMsg(username + ':'+ responseRes.text, key)
+        api_url = 'https://sc.ftqq.com/'+key+'.send'
+        title = "签到结果"
+        content = msg
+        data = {
+                "text" : title,
+                "desp" : content
+            }
+        return requests.post(api_url, headers=headers, timeout=None, data = data).content
+    
 stime = time()
 
 for usr,pas,key,proxy in parm:
