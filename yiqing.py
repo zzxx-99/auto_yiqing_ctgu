@@ -16,7 +16,7 @@ log = []
 
 def sentMsg(msg, key):
     headers = {'Content-Type': 'application/json;charset=utf-8'}
-    api_url = "https://sc.ftqq.com/"key.send?text='.urlencode('msg')"
+    api_url = "https://sc.ftqq.com/key.send?text='.urlencode('msg')"
     return requests.post(api_url, headers=headers, timeout=None).content
 
 def report(usr,pas,key,proxy):
