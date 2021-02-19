@@ -105,7 +105,7 @@ def report(usr,pas,key,proxy):
 stime = time()
 
 for usr,pas,key,proxy in parm:
-    report(username, password, key,proxy)
+    report(usr,pas,key,proxy)
     #start_new_thread(report,(usr,pas,))
     #report(usr,pas)
     #print(log[-1][-1])
